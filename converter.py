@@ -40,10 +40,15 @@ async def choise_currency(update, context):  # 2ая ступень диалог
 
 
 async def get_ammout(update, context):  # 3ая ступень диалога. Запись пары и вывод запроса колличества.
-    context.user_data['пара'] = update.callback_query.data.split(' - ')[1]
-    await context.application.bot.send_message(update.callback_query.message.chat_id,
-                                               f'Вы выбрали пару {update.callback_query.data}\nВведите колличество.')
-    return 3
+    try:
+        context.user_data['пара'] = update.callback_query.data.split(' - ')[1]
+    except IndexError:
+        await context.application.bot.send_message(update.callback_query.message.chat_id,
+                                                   'Пожалуйста, выберите пару из предложенных выше.')
+    else:
+        await context.application.bot.send_message(update.callback_query.message.chat_id,
+                                                   f'Вы выбрали пару {update.callback_query.data}\nВведите колличество.')
+        return 3
 
 
 # Последняя часть диалога. Попытка преобразования в число, Если да то отправка API запроса конвертации, вывод
@@ -63,4 +68,5 @@ async def converter_result(update, context):
 
 async def cancel(update, context):  # Обработка команды /cancel внутри диалога
     await update.message.reply_text('Завершение работы')
+    context.user_data.clear()
     return ConversationHandler.END
