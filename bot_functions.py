@@ -1,7 +1,7 @@
-from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters
+from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, CallbackQueryHandler
 from converter import *
 
-TODO: 'Написать инлайн клавиатуру, выбор пар обменника. Обработчик каллбаков. Библиотека python-telegram-bot'
+TODO:  'Библиотека python-telegram-bot'
 
 
 def __to_unpack(update, context):  # Распаковка объектов бот и сообщение из полученных аргументов
@@ -12,14 +12,14 @@ def __to_unpack(update, context):  # Распаковка объектов бо�
 
 
 converter = ConversationHandler(
-        entry_points=[CommandHandler('start', start_converter)],
-        states={
-            1: [MessageHandler(filters.Regex("^(Рубль|Доллар|Евро|Юань)$"), choise_currency)],
-            2: [MessageHandler(filters.TEXT, get_ammout)],
-            3: [MessageHandler(filters.TEXT, converter_result)]
+    entry_points=[CommandHandler('start', start_converter)],
+    states={
+        1: [CallbackQueryHandler(choise_currency)],
+        2: [CallbackQueryHandler(get_ammout)],
+        3: [MessageHandler(filters.TEXT, converter_result)]
         },
-        fallbacks=[CommandHandler('cancel', cancel)]
-    )
+    fallbacks=[CommandHandler('cancel', cancel)]
+)
 
 
 
