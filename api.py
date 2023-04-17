@@ -1,12 +1,13 @@
 import requests
 import json
+from config import api_key
 
 
 D = {'Рубль': 'RUB', 'Доллар': 'USD', 'Евро': 'EUR', 'Юань': 'CNY'}  # словарь валют и их символов для запроса
 
 
 def convert(cur_from, cur_to, amount: int):
-    url = f'https://currate.ru/api/?get=rates&pairs={D[cur_from]}{D[cur_to]}&key=dad5895f3e8060395348a5310ca8f846'
+    url = f'https://currate.ru/api/?get=rates&pairs={D[cur_from]}{D[cur_to]}&key={api_key}'
     payload = {}
     response = requests.request("GET", url, data=payload)
     data = json.loads(response.content)['data']

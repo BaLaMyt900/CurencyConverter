@@ -1,6 +1,6 @@
 from telegram.ext import Application
 from bot_functions import *
-from bot_token import token
+from config import token
 
 
 if __name__ == '__main__':
